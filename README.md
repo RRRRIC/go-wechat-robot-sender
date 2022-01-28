@@ -1,6 +1,7 @@
 # go-wechat-rebot-sender
 
 You can use this to send msg to wechat(enterprise) msg
+
 can be used as System monitor with shell-script
 
 **Only support text msg.**
