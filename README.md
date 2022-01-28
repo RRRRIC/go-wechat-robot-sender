@@ -19,7 +19,7 @@ if [ $? == 0 ]; then
     echo "nginx is running."
 else
     /opt/wechat-alert -k my-robot-key -m "restarting nginx process" -mobile 172xxxx1234,173xxxx5678
-		/usr/local/nginx
+	  /usr/local/nginx
     echo "nginx restart."
 fi
 ```
