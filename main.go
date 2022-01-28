@@ -93,6 +93,7 @@ func sentMsgToWechat() {
 		body, err := ioutil.ReadAll(request.Body)
 		if err != nil {
 			log.Println("Sent Msg wrong status , body :", string(body))
+			return
 		}
 	}
 	log.Println("Succeed sent msg to wechat, key : ", Key, " , msg : ", Msg)
