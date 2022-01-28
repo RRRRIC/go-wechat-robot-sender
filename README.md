@@ -64,7 +64,7 @@ CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build
 
 
 
-### User Windows Os
+### Under Windows Os
 
 ```bash
 # Mac
