@@ -73,17 +73,21 @@ func sentMsgToWechat() {
 	}()
 
 	jsoned, err := json.Marshal(sentMsg)
+	if err != nil {
+		return
+	}
 	request, err := http.NewRequest("POST", robotUrl, bytes.NewReader(jsoned))
-
+	if err != nil {
+		return
+	}
 	request.Header.Set("Content-Type", "application/json")
 	res, err := client.Do(request)
-	defer func() {
-		if err != nil {
-			log.Println("Can't send msg to wechat, err :", err)
-		} else {
-			res.Body.Close()
-		}
-	}()
+
+	if err != nil {
+		return
+	} else {
+		defer res.Body.Close()
+	}
 
 	if res.StatusCode != 200 {
 		body, err := ioutil.ReadAll(request.Body)
