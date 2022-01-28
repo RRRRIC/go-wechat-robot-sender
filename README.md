@@ -6,17 +6,46 @@ can be used as System monitor with shell-script
 
 **Only support text msg.**
 
+like monitor-nginx.sh
+
+```shell
+#!/bin/bash
+
+. /etc/profile
+
+# check nginx process status, or could be Java process, like 'java -jar my.jar'
+pgrep -f 'nginx' &>/dev/null 
+if [ $? == 0 ]; then
+    echo "nginx is running."
+else
+    /opt/wechat-alert -k my-robot-key -m "restarting nginx process" -mobile 172xxxx1234,173xxxx5678
+		/usr/local/nginx
+    echo "nginx restart."
+fi
+```
+
+then add it to crontab
+
+```bash
+crontab -u root -e
+
+...
+*/1 * * * * /opt/monitor-nginx.sh
+```
 
 
-## RequireMent
+
+
+
+## RequireMents
 
 -   Go >= 1.16
 
 
 
-## Building
+## Building project
 
-
+Downloading `git clone https://github.com/RRRRIC/go-wechat-rebot-sender.git`
 
 ### Under Linux/Mac Os
 
@@ -59,11 +88,8 @@ go build
 # Only do this the first time
 chmod +7 wechat-alert
 
-./wechat-alert -k my-rebot-key -m my-msg
+./wechat-alert -help
 
-# -m Msg has default value : test-msg
-# -k Key has not default value
-
+./wechat-alert -k my-rebot-key -m my-msg -mobile 139xxxx1234,158xxxx2345,172xxxx3456
 ```
-
 

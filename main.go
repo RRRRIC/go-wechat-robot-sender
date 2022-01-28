@@ -7,13 +7,16 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strings"
 	"time"
 )
 
 var (
-	Key    string
-	Msg    string
-	client *http.Client
+	Key         string
+	Msg         string
+	Member_list []string
+	Mobile_list []string
+	client      *http.Client
 )
 
 func init() {
@@ -23,32 +26,43 @@ func init() {
 }
 
 func main() {
-	flag.StringVar(&Key, "k", "", "the robot key")
+	var mobileString string
+	var memberString string
 
+	flag.StringVar(&Key, "k", "", "the robot key")
 	flag.StringVar(&Msg, "m", "test-msg", "the plain msg sent to wechat-enterprise")
+	flag.StringVar(&mobileString, "mobile", "", "the metioned users' mobile , multi-user split by ','")
+	flag.StringVar(&memberString, "member", "", "the metioned users' id , multi-user split by ','")
 	flag.Parse()
+
+	Mobile_list = strings.Split(mobileString, ",")
+	Member_list = strings.Split(memberString, ",")
 
 	if Key == "" {
 		log.Println("Must assign robot key")
 	}
 
-	sentMsgToWechat(Key, Msg)
+	sentMsgToWechat()
 }
 
 type WechatMsg struct {
 	MsgType string `json:"msgtype"`
 	Text    struct {
-		Content string `json:"content"`
+		Content               string   `json:"content"`
+		Mentioned_list        []string `json:"mentioned_list"`
+		Mentioned_mobile_list []string `json:"mentioned_mobile_list"`
 	} `json:"text"`
 }
 
-func sentMsgToWechat(key, msg string) {
-	robotUrl := "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=" + key
+func sentMsgToWechat() {
+	robotUrl := "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=" + Key
 	sentMsg := &WechatMsg{
 		MsgType: "text",
 		Text: struct {
-			Content string `json:"content"`
-		}{Content: msg},
+			Content               string   `json:"content"`
+			Mentioned_list        []string `json:"mentioned_list"`
+			Mentioned_mobile_list []string `json:"mentioned_mobile_list"`
+		}{Content: Msg, Mentioned_list: Member_list, Mentioned_mobile_list: Mobile_list},
 	}
 
 	var err error
@@ -77,5 +91,5 @@ func sentMsgToWechat(key, msg string) {
 			log.Println("Sent Msg wrong status , body :", string(body))
 		}
 	}
-	log.Println("Succeed sent msg to wechat , key : ", key, " , msg : ", msg)
+	log.Println("Succeed sent msg to wechat, key : ", Key, " , msg : ", Msg)
 }
