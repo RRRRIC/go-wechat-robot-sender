@@ -40,6 +40,7 @@ func main() {
 
 	if Key == "" {
 		log.Println("Must assign robot key")
+		panic("Can't sent msg without robot key")
 	}
 
 	sentMsgToWechat()
