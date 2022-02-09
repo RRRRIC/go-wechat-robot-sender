@@ -1,4 +1,4 @@
-# go-wechat-rebot-sender
+# go-wechat-robot-sender
 
 You can use this to send msg to wechat(enterprise) msg
 
@@ -77,6 +77,9 @@ go build
 SET CGO_ENABLED=0
 SET GOOS=linux
 SET GOARCH=amd64
+go build
+
+# Windows
 go build
 ```
 
